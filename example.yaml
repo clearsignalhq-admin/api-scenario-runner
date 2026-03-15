@@ -1,0 +1,27 @@
+scenario: cart-discount
+
+vars:
+  base_url: https://api.shop.com
+
+steps:
+  - name: login
+    request:
+      method: POST
+      url: ${base_url}/login
+      body:
+        username: demo
+        password: demo
+
+  - name: add_item
+    repeat: 10
+    request:
+      method: POST
+      url: ${base_url}/cart/items
+      body:
+        product_id: 123
+
+rules:
+  - name: discount_rule
+    if: cart_items >= 10
+    expect:
+      discount_applied: true
